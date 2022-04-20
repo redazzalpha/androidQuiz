@@ -1,10 +1,12 @@
-package com.example.quizexo;
+package com.example.quizexo.dao;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
+
+import com.example.quizexo.models.Choice;
 
 import java.util.List;
 

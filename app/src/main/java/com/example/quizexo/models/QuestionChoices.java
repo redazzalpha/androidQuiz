@@ -1,4 +1,4 @@
-package com.example.quizexo;
+package com.example.quizexo.models;
 
 import androidx.room.Embedded;
 import androidx.room.Relation;
