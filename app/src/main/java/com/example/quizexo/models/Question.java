@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class Question {
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     public long  questionId;
     public String questionText;
 }

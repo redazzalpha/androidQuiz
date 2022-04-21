@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class Choice {
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     public long  choiceId;
     public long  parentId;
     public String choiceText;

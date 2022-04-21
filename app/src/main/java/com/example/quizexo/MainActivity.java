@@ -8,12 +8,13 @@ import android.os.Bundle;
 import com.example.quizexo.dao.ChoiceDao;
 import com.example.quizexo.dao.QuestionDao;
 import com.example.quizexo.database.QuizDb;
+import com.example.quizexo.defines.Defines;
 import com.example.quizexo.models.Choice;
 import com.example.quizexo.models.Question;
 import com.example.quizexo.models.QuestionChoices;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -25,32 +26,45 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        executor.execute(this::createDatabase);
+
+    }
+
+    public void createDatabase() {
+        // get database instance
         QuizDb database = Room.databaseBuilder(getApplicationContext(), QuizDb.class, "QuizDB").build();
+        database.clearAllTables();
 
-        executor.execute(() -> {
-            QuestionDao questionDao = database.questionDao();
-            ChoiceDao choiceDao = database.choiceDao();
+        // get Dao
+        QuestionDao questionDao = database.questionDao();
+        ChoiceDao choiceDao = database.choiceDao();
 
-            Question question1 = new Question(0, "This is question 1");
-            Question question2 = new Question(0, "This is question 2");
+        int i = 1, j = 1;
 
-            Choice choice1 = new Choice(0, 1, "choice n°1 for question 1" );
-            Choice choice2 = new Choice(0, 2, "choice n°1 for question 2" );
+        // save questions over database
+        List<Question> questions = new ArrayList<>();
+        for(String question : Defines.questions)
+            questions.add(new Question(i++, question));
 
+        for(Question question : questions)
+            questionDao.save(question);
 
-            choiceDao.save(choice1);
-            choiceDao.save(choice2);
+        // save choices over database
+        List<Choice> choices = new ArrayList<>();
 
-            questionDao.save(question1);
-            questionDao.save(question2);
+        i = 1;
+        for(String choice : Defines.choices){
+            if(!choice.equals("\n"))
+                choices.add(new Choice(j++, i, choice));
+            else i++;
+        }
 
+        for(Choice choice : choices)
+            choiceDao.save(choice);
 
-            List<QuestionChoices> l = questionDao.parseAll();
-            for(QuestionChoices c : l)
-                System.out.println("****************************************** " + c.question + " - " + c.choices);
-
-
-        });
-
+        // show results
+        List<QuestionChoices> l = questionDao.getAllQuestionChoices();
+        for(QuestionChoices c : l)
+            System.out.println("****************************************** " + c.question + " - " + c.choices);
     }
 }

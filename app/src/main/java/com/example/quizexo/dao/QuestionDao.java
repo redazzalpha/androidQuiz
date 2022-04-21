@@ -34,7 +34,7 @@ public interface QuestionDao {
     public Question getById(long id);
 
     @Query("select * from question")
-    public List<QuestionChoices> parseAll();
+    public List<QuestionChoices> getAllQuestionChoices();
 
 
 
