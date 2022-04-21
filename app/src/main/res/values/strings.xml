@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">QuizExo</string>
+    <string name="title_bar">Hello ! Please insert your name</string>
+    <string name="input_name" />
+    <string name="input_name_hint">Insert your name here</string>
+    <string name="btn_start">Start Quiz</string>
 </resources>

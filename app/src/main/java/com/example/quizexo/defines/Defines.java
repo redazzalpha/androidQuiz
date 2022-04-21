@@ -36,6 +36,5 @@ public class Defines {
             "Inde",
             "Indonésie",
             "\n",
-
     };
 }

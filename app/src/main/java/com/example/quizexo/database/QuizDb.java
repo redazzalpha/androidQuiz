@@ -1,5 +1,6 @@
 package com.example.quizexo.database;
 
+import androidx.room.AutoMigration;
 import androidx.room.Database;
 import androidx.room.RoomDatabase;
 
