@@ -1,7 +1,10 @@
 package com.example.quizexo.defines;
 
 public class Defines {
-    public static final String questions[] = {
+    public static final int BTN_MARGINS_LF = 30;
+    public static final int BTN_MARGINS_TB = 15;
+
+    public static final String QUESTIONS[] = {
             // question 1
             "Quel est le premier Président Français de la 4e République ? ",
             // question 2
@@ -11,7 +14,7 @@ public class Defines {
             // question 4
             "Quelle est le pays le plus peuplé du monde ?",
     };
-    public static final String choices[] = {
+    public static final String CHOICES[] = {
             // choices question 1
             "Vincent AURIOL",
             "René COTY",

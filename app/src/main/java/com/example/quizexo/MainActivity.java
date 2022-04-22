@@ -3,6 +3,7 @@ package com.example.quizexo;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -21,6 +22,7 @@ import com.example.quizexo.models.Question;
 import com.example.quizexo.models.QuestionChoices;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -32,6 +34,9 @@ public class MainActivity extends AppCompatActivity {
     private EditText inputName;
     private Button btnStart;
     private ImageButton btnDelete;
+    static List<QuestionChoices> questionChoices;
+    static Iterator<QuestionChoices> questionChoicesIterator;
+    static int questionCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         this.inputName.setText("");
     }
     public void startQuiz(View view) {
-
+        startActivity(new Intent(this, MainActivity2.class));
     }
 
     public void enableStart() {
@@ -98,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
         // save questions over database
         List<Question> questions = new ArrayList<>();
-        for(String question : Defines.questions)
+        for(String question : Defines.QUESTIONS)
             questions.add(new Question(i++, question));
 
         for(Question question : questions)
@@ -108,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
         List<Choice> choices = new ArrayList<>();
 
         i = 1;
-        for(String choice : Defines.choices){
+        for(String choice : Defines.CHOICES){
             if(!choice.equals("\n")) choices.add(new Choice(j++, i, choice));
             else i++;
         }
@@ -117,8 +122,10 @@ public class MainActivity extends AppCompatActivity {
             choiceDao.save(choice);
 
         // show results
-        List<QuestionChoices> l = questionDao.getAllQuestionChoices();
-        for(QuestionChoices c : l)
+        questionChoices = questionDao.getAllQuestionChoices();
+        questionChoicesIterator = questionChoices.iterator();
+
+        for(QuestionChoices c : questionChoices)
             System.out.println("****************************************** " + c.question + " - " + c.choices);
     }
 
