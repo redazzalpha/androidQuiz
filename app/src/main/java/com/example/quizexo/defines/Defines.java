@@ -4,6 +4,9 @@ public class Defines {
     public static final int BTN_MARGINS_LF = 30;
     public static final int BTN_MARGINS_TB = 15;
 
+    public static final String DIALOG_TITLE = "Quiz finished";
+    public static final String DIALOG_MESSAGE = "You score is ";
+
     public static final String QUESTIONS[] = {
             // question 1
             "Quel est le premier Président Français de la 4e République ? ",

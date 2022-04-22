@@ -18,9 +18,15 @@ import com.example.quizexo.models.Choice;
 import com.example.quizexo.models.QuestionChoices;
 import com.example.quizexo.models.User;
 import com.example.quizexo.models.UserAnswers;
+import com.example.quizexo.utils.Dialog;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 public class MainActivity2 extends AppCompatActivity {
+    static final ExecutorService executor = Executors.newSingleThreadExecutor();
+
     private  TextView titleActivity2;
     private  TextView questionText;
     private LinearLayout wrapper;
@@ -70,7 +76,7 @@ public class MainActivity2 extends AppCompatActivity {
         wrapper.addView(btnField);
     }
     public void saveAnswer(View view) {
-        MainActivity.executor.execute(() -> {
+        executor.execute(() -> {
             String answerStr = ((Button)view).getText().toString();
 
             UserDao userDao = MainActivity.userDao;
@@ -84,7 +90,7 @@ public class MainActivity2 extends AppCompatActivity {
         this.initChoices();
     }
     public void setScore() {
-        MainActivity.executor.execute(() -> {
+        executor.execute(() -> {
             UserAnswers userAnswers = MainActivity.userDao.getUserAnswer(MainActivity.currentUser);
             int i = 0;
             for(Answer answer : userAnswers.answers) {
@@ -92,5 +98,7 @@ public class MainActivity2 extends AppCompatActivity {
                     userAnswers.user.score++;
             }
         });
+        Dialog dialog = new Dialog(MainActivity2.this, "Quiz finished !", "Your score");
+        dialog.show();
     }
 }

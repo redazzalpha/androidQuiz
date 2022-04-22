@@ -1,5 +1,6 @@
 package com.example.quizexo;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
@@ -25,6 +26,7 @@ import com.example.quizexo.models.Question;
 import com.example.quizexo.models.QuestionChoices;
 import com.example.quizexo.models.User;
 import com.example.quizexo.models.UserAnswers;
+import com.example.quizexo.utils.Dialog;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -72,33 +74,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
-
-
-//        executor.execute(() -> {
-//            UserDao userDao  = database.userDao();
-//            AnswerDao answerDao  = database.answerDao();
-//
-//            User max = new User(1,  "max", 0);
-//            User julie = new User(2,  "julie", 0);
-//
-//            Answer answer1 = new Answer(0, 2, "response 1");
-//            Answer answer2 = new Answer(0, 1, "response 2");
-//
-//            userDao.save(max);
-//            userDao.save(julie);
-//
-//            answerDao.save(answer1);
-//            answerDao.save(answer2);
-//
-//
-//            for( UserAnswers u  : userDao.getAllUserAnswer())
-//                System.out.println("------------------ " + u.user + " - "  + u.answers);
-//
-//        });
-
-
-
     }
 
     public void startQuiz(View view) {

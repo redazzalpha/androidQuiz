@@ -7,4 +7,6 @@
     <string name="btn_start">Start Quiz</string>
     <string name="questionText">Question</string>
     <string name="delete">delete</string>
+    <string name="dialog_title">Quiz finished</string>
+    <string name="dialog_message">Your score is</string>
 </resources>
