@@ -40,4 +40,14 @@ public class Defines {
             "Indonésie",
             "\n",
     };
+    public static final String ANSWERS[] = {
+        // answer question 1
+        "Vincent AURIOL",
+        // answer question 2
+        "15",
+        // answer question 3
+        "L'Artchi",
+        // answer question 4
+        "USA",
+    };
 }

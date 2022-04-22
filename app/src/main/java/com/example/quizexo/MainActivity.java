@@ -13,13 +13,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import com.example.quizexo.dao.AnswerDao;
 import com.example.quizexo.dao.ChoiceDao;
 import com.example.quizexo.dao.QuestionDao;
+import com.example.quizexo.dao.UserDao;
 import com.example.quizexo.database.QuizDb;
 import com.example.quizexo.defines.Defines;
+import com.example.quizexo.models.Answer;
 import com.example.quizexo.models.Choice;
 import com.example.quizexo.models.Question;
 import com.example.quizexo.models.QuestionChoices;
+import com.example.quizexo.models.User;
+import com.example.quizexo.models.UserAnswers;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -30,13 +35,19 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
-    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    static final ExecutorService executor = Executors.newSingleThreadExecutor();
+
     private EditText inputName;
     private Button btnStart;
     private ImageButton btnDelete;
-    static List<QuestionChoices> questionChoices;
+
+    static QuizDb database;
+    static UserDao userDao;
+
+    static String currentUser;
+    static int questionCount = 1;
     static Iterator<QuestionChoices> questionChoicesIterator;
-    static int questionCount = 0;
+    static Iterator<UserAnswers> userAnswersIterator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,16 +63,93 @@ public class MainActivity extends AppCompatActivity {
         inputName.addTextChangedListener(new inputNameOnValueChange());
         btnDelete.setOnClickListener(this::clearInputName);
         btnStart.setOnClickListener(this::startQuiz);
+
         executor.execute(this::createDatabase);
 
         disableButtons();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+
+
+//        executor.execute(() -> {
+//            UserDao userDao  = database.userDao();
+//            AnswerDao answerDao  = database.answerDao();
+//
+//            User max = new User(1,  "max", 0);
+//            User julie = new User(2,  "julie", 0);
+//
+//            Answer answer1 = new Answer(0, 2, "response 1");
+//            Answer answer2 = new Answer(0, 1, "response 2");
+//
+//            userDao.save(max);
+//            userDao.save(julie);
+//
+//            answerDao.save(answer1);
+//            answerDao.save(answer2);
+//
+//
+//            for( UserAnswers u  : userDao.getAllUserAnswer())
+//                System.out.println("------------------ " + u.user + " - "  + u.answers);
+//
+//        });
+
+
+
+    }
+
+    public void startQuiz(View view) {
+        executor.execute(this::createUser);
+        startActivity(new Intent(this, MainActivity2.class));
+    }
     public void clearInputName(View view) {
         this.inputName.setText("");
     }
-    public void startQuiz(View view) {
-        startActivity(new Intent(this, MainActivity2.class));
+
+    public void createDatabase() {
+        // get database instance
+        database = Room.databaseBuilder(getApplicationContext(), QuizDb.class, "QuizDB").build();
+        database.clearAllTables();
+
+        // get Dao
+        QuestionDao questionDao = database.questionDao();
+        ChoiceDao choiceDao = database.choiceDao();
+        UserDao  userDao = database.userDao();
+
+        int i = 1, j = 1;
+
+        // save questions over database
+        List<Question> questions = new ArrayList<>();
+        for(String question : Defines.QUESTIONS)
+            questions.add(new Question(i++, question));
+
+        for(Question question : questions)
+            questionDao.save(question);
+
+        // save choices over database
+        List<Choice> choices = new ArrayList<>();
+
+        i = 1;
+        for(String choice : Defines.CHOICES){
+            if(!choice.equals("\n")) choices.add(new Choice(j++, i, choice));
+            else i++;
+        }
+
+        for(Choice choice : choices)
+            choiceDao.save(choice);
+
+        // set iterator
+        questionChoicesIterator = questionDao.getAllQuestionChoices().iterator();
+    }
+    public void createUser() {
+        userDao = database.userDao();
+        currentUser = inputName.getText().toString();
+        userDao.save(new User(0, currentUser, 0));
+
+        userAnswersIterator = userDao.getAllUserAnswer().iterator();
     }
 
     public void enableStart() {
@@ -88,45 +176,6 @@ public class MainActivity extends AppCompatActivity {
     public void disableButtons() {
         this.disableStart();
         this.disableDelete();
-    }
-
-    public void createDatabase() {
-        // get database instance
-        QuizDb database = Room.databaseBuilder(getApplicationContext(), QuizDb.class, "QuizDB").build();
-        database.clearAllTables();
-
-        // get Dao
-        QuestionDao questionDao = database.questionDao();
-        ChoiceDao choiceDao = database.choiceDao();
-
-        int i = 1, j = 1;
-
-        // save questions over database
-        List<Question> questions = new ArrayList<>();
-        for(String question : Defines.QUESTIONS)
-            questions.add(new Question(i++, question));
-
-        for(Question question : questions)
-            questionDao.save(question);
-
-        // save choices over database
-        List<Choice> choices = new ArrayList<>();
-
-        i = 1;
-        for(String choice : Defines.CHOICES){
-            if(!choice.equals("\n")) choices.add(new Choice(j++, i, choice));
-            else i++;
-        }
-
-        for(Choice choice : choices)
-            choiceDao.save(choice);
-
-        // show results
-        questionChoices = questionDao.getAllQuestionChoices();
-        questionChoicesIterator = questionChoices.iterator();
-
-        for(QuestionChoices c : questionChoices)
-            System.out.println("****************************************** " + c.question + " - " + c.choices);
     }
 
     class inputNameOnValueChange implements TextWatcher {

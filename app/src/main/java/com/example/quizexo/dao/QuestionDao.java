@@ -27,11 +27,11 @@ public interface QuestionDao {
     @Delete
     public void delete(Question question);
 
-    @Query("select * from question")
-    public List<Question> getAll();
-
     @Query("select * from  question where  questionId = :id")
     public Question getById(long id);
+
+    @Query("select * from question")
+    public List<Question> getAll();
 
     @Query("select * from question")
     public List<QuestionChoices> getAllQuestionChoices();
