@@ -16,6 +16,8 @@ public class Defines {
             "Quelle est la langue le moins parlée au monde ?",
             // question 4
             "Quelle est le pays le plus peuplé du monde ?",
+            // question
+            "Quelle est la couleur du ciel ?",
     };
     public static final String CHOICES[] = {
             // choices question 1
@@ -42,6 +44,12 @@ public class Defines {
             "Inde",
             "Indonésie",
             "\n",
+            // choices question 5
+            "rouge",
+            "jaune",
+            "bleu",
+            "orange",
+            "\n",
     };
     public static final String ANSWERS[] = {
         // answer question 1
@@ -50,7 +58,9 @@ public class Defines {
         "15",
         // answer question 3
         "L'Artchi",
-        // answer question 4
-        "USA",
+            // answer question 4
+            "USA",
+            // answer question 5
+            "bleu",
     };
 }

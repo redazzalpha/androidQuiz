@@ -19,6 +19,10 @@ import com.example.quizexo.models.User;
 import com.example.quizexo.models.UserAnswers;
 import com.example.quizexo.utils.Dialog;
 
+import java.util.concurrent.Future;
+
+import lombok.SneakyThrows;
+
 public class MainActivity2 extends AppCompatActivity {
     // properties
     private  TextView titleActivity2;
@@ -67,16 +71,19 @@ public class MainActivity2 extends AppCompatActivity {
 
         wrapper.addView(btnField);
     }
+    @SneakyThrows
     public void createScoreView() {
-        MainActivity.executor.execute(() -> {
+        Future<Integer> future = MainActivity.executor.submit(() -> {
             UserAnswers userAnswers = MainActivity.userDao.getUserAnswer(MainActivity.currentUser);
             int i = 0;
             for(Answer answer : userAnswers.answers) {
                 if(answer.text.equals(Defines.ANSWERS[i++]))
                     userAnswers.user.score++;
             }
+            MainActivity.userDao.update(userAnswers.user);
+            return userAnswers.user.score;
         });
-        Dialog dialog = new Dialog(MainActivity2.this, "Quiz finished !", "Your score");
+        Dialog dialog = new Dialog(MainActivity2.this, "Quiz finished !", "Your score is " + future.get() + "/" + Defines.QUESTIONS.length);
         dialog.show();
     }
 
