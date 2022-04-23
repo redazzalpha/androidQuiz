@@ -24,7 +24,6 @@ public class Dialog {
             context.startActivity(new Intent(context, MainActivity.class));
         });
         dialog = builder.create();
-
     }
     public void show() {
         this.dialog.show();
