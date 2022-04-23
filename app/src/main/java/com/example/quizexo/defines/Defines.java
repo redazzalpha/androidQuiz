@@ -45,22 +45,22 @@ public class Defines {
             "Indonésie",
             "\n",
             // choices question 5
-            "rouge",
-            "jaune",
-            "bleu",
-            "orange",
+            "Rouge",
+            "Jaune",
+            "Bleu",
+            "Orange",
             "\n",
     };
     public static final String ANSWERS[] = {
         // answer question 1
         "Vincent AURIOL",
         // answer question 2
-        "15",
+        "27",
         // answer question 3
-        "L'Artchi",
-            // answer question 4
-            "USA",
-            // answer question 5
-            "bleu",
+        "Le Silbo",
+        // answer question 4
+        "Chine",
+        // answer question 5
+        "Bleu",
     };
 }
